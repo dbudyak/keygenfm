@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEYGEN FM — Chiptune Radio 24/7</title>
+  <meta name="description" content="KEYGEN FM — 24/7 chiptune, keygen music, cracktro & demoscene radio. Stream the finest 8-bit and tracker music from the digital underground.">
+  <meta name="keywords" content="keygen music, chiptune radio, 8-bit music, cracktro, demoscene, tracker music, chip music, retro radio, keygen fm">
+  <meta property="og:title" content="KEYGEN FM — Chiptune Radio 24/7">
+  <meta property="og:description" content="Stream the finest chiptune, keygen & cracktro music 24/7 from the digital underground.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://keygen-fm.kodatek.app">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════
+       KEYGEN FM — CRACKTRO AESTHETIC
+       ═══════════════════════════════════════════ */
+
+    :root {
+      --cyan: #00ffd5;
+      --magenta: #ff00aa;
+      --green: #39ff14;
+      --amber: #ffbf00;
+      --blue: #00aaff;
+      --dark: #0a0a0f;
+      --darker: #050508;
+      --panel: rgba(10, 10, 20, 0.85);
+      --border: rgba(0, 255, 213, 0.15);
+      --glow-cyan: 0 0 10px rgba(0, 255, 213, 0.3), 0 0 40px rgba(0, 255, 213, 0.1);
+      --glow-magenta: 0 0 10px rgba(255, 0, 170, 0.3), 0 0 40px rgba(255, 0, 170, 0.1);
+      --pixel-font: 'Press Start 2P', monospace;
+      --mono-font: 'Share Tech Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--darker);
+      color: var(--cyan);
+      font-family: var(--mono-font);
+    }
+
+    /* ── STARFIELD CANVAS ── */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* ── CRT OVERLAY ── */
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.08) 2px,
+          rgba(0, 0, 0, 0.08) 4px
+        );
+    }
+
+    .crt-overlay::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.45) 100%);
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .app {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* ── MAIN PANEL ── */
+    .main-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 28px 36px;
+      max-width: 700px;
+      width: 100%;
+      position: relative;
+      backdrop-filter: blur(8px);
+      box-shadow: var(--glow-cyan), inset 0 0 60px rgba(0,0,0,0.4);
+    }
+
+    .main-panel::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 2px;
+      background: linear-gradient(135deg, var(--cyan), var(--magenta), var(--blue));
+      z-index: -1;
+      opacity: 0.12;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .logo {
+      font-family: var(--pixel-font);
+      font-size: 28px;
+      letter-spacing: 4px;
+      color: var(--cyan);
+      text-shadow: var(--glow-cyan), 2px 2px 0 var(--magenta);
+      margin-bottom: 4px;
+      animation: glitch-text 4s infinite;
+    }
+
+    .subtitle {
+      font-family: var(--pixel-font);
+      font-size: 8px;
+      letter-spacing: 6px;
+      color: var(--magenta);
+      text-transform: uppercase;
+      text-shadow: var(--glow-magenta);
+      opacity: 0.9;
+    }
+
+    .divider {
+      margin: 16px 0;
+      text-align: center;
+      color: var(--border);
+      font-size: 10px;
+      letter-spacing: 2px;
+      overflow: hidden;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* ── VISUALIZER ── */
+    .visualizer-container {
+      width: 100%;
+      height: 60px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 1px;
+      background: rgba(0,0,0,0.3);
+    }
+
+    #visualizer {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ── NOW PLAYING ── */
+    .now-playing {
+      text-align: center;
+      margin-bottom: 20px;
+      min-height: 56px;
+    }
+
+    .np-label {
+      font-family: var(--pixel-font);
+      font-size: 7px;
+      color: var(--green);
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+    }
+
+    .np-title {
+      font-family: var(--pixel-font);
+      font-size: 11px;
+      color: #fff;
+      margin-bottom: 4px;
+      text-shadow: 0 0 6px rgba(255,255,255,0.3);
+      word-break: break-word;
+    }
+
+    .np-artist {
+      font-size: 14px;
+      color: var(--amber);
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(255, 191, 0, 0.2);
+    }
+
+    /* ── CONTROLS ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .play-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan);
+      background: rgba(0, 255, 213, 0.05);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      box-shadow: var(--glow-cyan);
+      position: relative;
+    }
+
+    .play-btn:hover {
+      background: rgba(0, 255, 213, 0.15);
+      box-shadow: 0 0 20px rgba(0,255,213,0.5), 0 0 60px rgba(0,255,213,0.2);
+      transform: scale(1.05);
+    }
+
+    .play-btn:active {
+      transform: scale(0.97);
+    }
+
+    .play-btn svg {
+      fill: var(--cyan);
+      width: 24px;
+      height: 24px;
+    }
+
+    .play-btn.playing {
+      border-color: var(--magenta);
+      box-shadow: var(--glow-magenta);
+    }
+
+    .play-btn.playing svg {
+      fill: var(--magenta);
+    }
+
+    .play-btn.playing:hover {
+      background: rgba(255,0,170,0.15);
+      box-shadow: 0 0 20px rgba(255,0,170,0.5), 0 0 60px rgba(255,0,170,0.2);
+    }
+
+    .volume-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .volume-icon {
+      width: 16px;
+      height: 16px;
+      fill: var(--cyan);
+      opacity: 0.6;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 90px;
+      height: 3px;
+      background: linear-gradient(to right, var(--cyan) 0%, var(--cyan) var(--val, 80%), rgba(255,255,255,0.1) var(--val, 80%));
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--cyan);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      background: var(--cyan);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-bottom: 16px;
+    }
+
+    .listeners {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .listeners-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--green);
+      animation: pulse-dot 2s infinite;
+    }
+
+    .listeners-dot.offline {
+      background: #ff3333;
+      box-shadow: 0 0 6px #ff3333;
+      animation: none;
+    }
+
+    .bitrate {
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── SONG HISTORY ── */
+    .history-section {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .history-label {
+      font-family: var(--pixel-font);
+      font-size: 7px;
+      color: var(--blue);
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 8px rgba(0, 170, 255, 0.3);
+    }
+
+    .history-list {
+      list-style: none;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 5px 0;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .history-item:last-child { border-bottom: none; }
+
+    .history-time {
+      font-size: 9px;
+      color: rgba(255,255,255,0.2);
+      min-width: 42px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .history-song {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── SCROLLING TICKER ── */
+    .ticker-wrap {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 20px;
+      opacity: 0.4;
+    }
+
+    .ticker {
+      display: inline-block;
+      white-space: nowrap;
+      font-family: var(--pixel-font);
+      font-size: 7px;
+      color: var(--cyan);
+      letter-spacing: 2px;
+      animation: scroll-ticker 30s linear infinite;
+    }
+
+    /* ── FOOTER LINKS ── */
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .footer-links a {
+      font-family: var(--pixel-font);
+      font-size: 7px;
+      color: var(--cyan);
+      text-decoration: none;
+      letter-spacing: 1px;
+      opacity: 0.5;
+      transition: opacity 0.2s, text-shadow 0.2s;
+    }
+
+    .footer-links a:hover {
+      opacity: 1;
+      text-shadow: 0 0 8px var(--cyan);
+    }
+
+    /* ── LOADING STATE ── */
+    .loading-text {
+      font-family: var(--pixel-font);
+      font-size: 9px;
+      color: var(--cyan);
+      animation: blink-cursor 1s step-end infinite;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes glitch-text {
+      0%, 95%, 100% { opacity: 1; transform: translate(0); }
+      96% { opacity: 0.8; transform: translate(-2px, 1px); color: var(--magenta); }
+      97% { opacity: 0.9; transform: translate(2px, -1px); color: var(--cyan); }
+      98% { opacity: 0.7; transform: translate(-1px, 0); }
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes blink-cursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes scroll-ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 520px) {
+      .main-panel { padding: 20px 16px; }
+      .logo { font-size: 18px; letter-spacing: 2px; }
+      .subtitle { font-size: 6px; letter-spacing: 3px; }
+      .np-title { font-size: 9px; }
+      .volume-slider { width: 60px; }
+      .status-bar { font-size: 9px; }
+      .controls { gap: 14px; }
+      .play-btn { width: 56px; height: 56px; }
+    }
+
+    @media (max-width: 360px) {
+      .logo { font-size: 14px; }
+      .footer-links { flex-direction: column; align-items: center; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STARFIELD BACKGROUND -->
+  <canvas id="starfield"></canvas>
+
+  <!-- CRT SCANLINES -->
+  <div class="crt-overlay"></div>
+
+  <!-- MAIN APP -->
+  <div class="app">
+    <div class="main-panel">
+
+      <!-- HEADER -->
+      <div class="header">
+        <div class="logo">KEYGEN FM</div>
+        <div class="subtitle">chiptune &middot; cracktro &middot; demoscene</div>
+      </div>
+
+      <div class="divider">═══════════════════════════════════════════════</div>
+
+      <!-- AUDIO VISUALIZER -->
+      <div class="visualizer-container">
+        <canvas id="visualizer"></canvas>
+      </div>
+
+      <!-- NOW PLAYING -->
+      <div class="now-playing">
+        <div class="np-label">▸ NOW PLAYING</div>
+        <div class="np-title" id="np-title"><span class="loading-text">CONNECTING...</span></div>
+        <div class="np-artist" id="np-artist"></div>
+      </div>
+
+      <!-- CONTROLS -->
+      <div class="controls">
+        <div class="volume-wrap">
+          <svg class="volume-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8.5v7a4.47 4.47 0 0 0 2.5-3.5z"/></svg>
+          <input type="range" class="volume-slider" id="volume" min="0" max="100" value="80">
+        </div>
+        <button class="play-btn" id="playBtn" aria-label="Play/Pause">
+          <svg id="playIcon" viewBox="0 0 24 24"><polygon points="6,3 20,12 6,21"/></svg>
+          <svg id="pauseIcon" viewBox="0 0 24 24" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+        </button>
+        <div style="width:114px"></div><!-- spacer to center play button -->
+      </div>
+
+      <!-- STATUS BAR -->
+      <div class="status-bar">
+        <div class="listeners">
+          <div class="listeners-dot" id="statusDot"></div>
+          <span id="listenersCount">— listeners</span>
+        </div>
+        <div class="bitrate" id="bitrateInfo">—</div>
+      </div>
+
+      <!-- SONG HISTORY -->
+      <div class="history-section">
+        <div class="history-label">▸ RECENTLY PLAYED</div>
+        <ul class="history-list" id="historyList">
+          <li class="history-item"><span class="loading-text">loading history...</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SCROLLING TICKER -->
+    <div class="ticker-wrap">
+      <div class="ticker" id="ticker">
+        KEYGEN FM &mdash; 24/7 CHIPTUNE &amp; CRACKTRO RADIO &mdash; BROADCASTING FROM THE DIGITAL UNDERGROUND &mdash; DEMOSCENE &bull; TRACKER MUSIC &bull; 8-BIT &bull; KEYGEN TUNES &mdash;
+        KEYGEN FM &mdash; 24/7 CHIPTUNE &amp; CRACKTRO RADIO &mdash; BROADCASTING FROM THE DIGITAL UNDERGROUND &mdash; DEMOSCENE &bull; TRACKER MUSIC &bull; 8-BIT &bull; KEYGEN TUNES &mdash;
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer-links">
+      <a href="https://github.com/dbudyak/keygenfm" target="_blank" rel="noopener">[GITHUB]</a>
+      <a href="https://keygen-fm.kodatek.app/public/keygen_fm" target="_blank" rel="noopener">[AZURACAST]</a>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════
+    // CONFIGURATION — EDIT THESE TO MATCH YOUR SETUP
+    // ═══════════════════════════════════════════
+    const CONFIG = {
+      // Your AzuraCast base URL (no trailing slash)
+      azuracastUrl: 'https://keygen-fm.kodatek.app',
+      // Your station short name or numeric ID
+      stationId: '1',
+      // Polling interval in ms (15s is polite for the API)
+      pollInterval: 15000,
+      // Direct stream URL — update this with your actual mount point
+      // You can find it in AzuraCast → Station → Mount Points
+      // Common patterns:
+      //   /listen/station_name/radio.mp3
+      //   /radio/8000/radio.mp3
+      streamUrl: 'https://keygen-fm.kodatek.app/listen/keygen_fm/radio.mp3',
+    };
+
+    // ═══════════════════════════════════════════
+    // STARFIELD
+    // ═══════════════════════════════════════════
+    const starCanvas = document.getElementById('starfield');
+    const starCtx = starCanvas.getContext('2d');
+    let stars = [];
+
+    function initStarfield() {
+      starCanvas.width = window.innerWidth;
+      starCanvas.height = window.innerHeight;
+      stars = [];
+      const count = Math.min(300, Math.floor((starCanvas.width * starCanvas.height) / 3000));
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * starCanvas.width,
+          y: Math.random() * starCanvas.height,
+          z: Math.random() * 3 + 0.5,
+          brightness: Math.random(),
+        });
+      }
+    }
+
+    function drawStarfield() {
+      starCtx.fillStyle = 'rgba(5, 5, 8, 0.25)';
+      starCtx.fillRect(0, 0, starCanvas.width, starCanvas.height);
+
+      for (const s of stars) {
+        s.y += s.z * 0.4;
+        if (s.y > starCanvas.height) {
+          s.y = 0;
+          s.x = Math.random() * starCanvas.width;
+        }
+        const alpha = 0.3 + s.brightness * 0.7;
+        const size = s.z * 0.7;
+        starCtx.fillStyle = `rgba(0, 255, 213, ${alpha})`;
+        starCtx.fillRect(s.x, s.y, size, size);
+      }
+      requestAnimationFrame(drawStarfield);
+    }
+
+    initStarfield();
+    drawStarfield();
+    window.addEventListener('resize', initStarfield);
+
+    // ═══════════════════════════════════════════
+    // AUDIO PLAYER + VISUALIZER
+    // ═══════════════════════════════════════════
+    let audioCtx, analyser, source, dataArray;
+    const audio = new Audio();
+    audio.crossOrigin = 'anonymous';
+    audio.preload = 'none';
+    let isPlaying = false;
+
+    const visCanvas = document.getElementById('visualizer');
+    const visCtx = visCanvas.getContext('2d');
+
+    function resizeVisualizer() {
+      const rect = visCanvas.parentElement.getBoundingClientRect();
+      visCanvas.width = rect.width;
+      visCanvas.height = rect.height;
+    }
+    resizeVisualizer();
+    window.addEventListener('resize', resizeVisualizer);
+
+    function initAudioContext() {
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.75;
+      source = audioCtx.createMediaElementSource(audio);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+    }
+
+    function drawVisualizer() {
+      requestAnimationFrame(drawVisualizer);
+      const w = visCanvas.width;
+      const h = visCanvas.height;
+      visCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      visCtx.fillRect(0, 0, w, h);
+
+      if (!analyser || !isPlaying) {
+        // idle state — draw a flatline with subtle noise
+        visCtx.strokeStyle = 'rgba(0, 255, 213, 0.15)';
+        visCtx.lineWidth = 1;
+        visCtx.beginPath();
+        const mid = h / 2;
+        for (let x = 0; x < w; x += 4) {
+          const noise = (Math.random() - 0.5) * 4;
+          visCtx.lineTo(x, mid + noise);
+        }
+        visCtx.stroke();
+        return;
+      }
+
+      analyser.getByteFrequencyData(dataArray);
+      const barCount = 64;
+      const barWidth = w / barCount;
+      const step = Math.floor(dataArray.length / barCount);
+
+      for (let i = 0; i < barCount; i++) {
+        const val = dataArray[i * step] / 255;
+        const barH = val * h * 0.9;
+
+        // gradient from cyan to magenta based on intensity
+        const r = Math.floor(val * 255);
+        const g = Math.floor((1 - val) * 255);
+        const b = 213;
+        visCtx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.6 + val * 0.4})`;
+        visCtx.fillRect(i * barWidth + 1, h - barH, barWidth - 2, barH);
+
+        // reflection
+        visCtx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.08)`;
+        visCtx.fillRect(i * barWidth + 1, 0, barWidth - 2, h - barH);
+      }
+    }
+    drawVisualizer();
+
+    // ═══════════════════════════════════════════
+    // PLAY / PAUSE
+    // ═══════════════════════════════════════════
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+
+    playBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        initAudioContext();
+        // Append cache-buster to avoid stale stream
+        audio.src = CONFIG.streamUrl;
+        audio.play().catch(e => console.warn('Playback failed:', e));
+        isPlaying = true;
+        playBtn.classList.add('playing');
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+      } else {
+        audio.pause();
+        audio.src = '';
+        isPlaying = false;
+        playBtn.classList.remove('playing');
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+      }
+    });
+
+    // ═══════════════════════════════════════════
+    // VOLUME
+    // ═══════════════════════════════════════════
+    const volumeSlider = document.getElementById('volume');
+    volumeSlider.style.setProperty('--val', volumeSlider.value + '%');
+    audio.volume = volumeSlider.value / 100;
+
+    volumeSlider.addEventListener('input', (e) => {
+      audio.volume = e.target.value / 100;
+      e.target.style.setProperty('--val', e.target.value + '%');
+    });
+
+    // ═══════════════════════════════════════════
+    // NOW PLAYING API POLLING
+    // ═══════════════════════════════════════════
+    const npTitle = document.getElementById('np-title');
+    const npArtist = document.getElementById('np-artist');
+    const listenersCount = document.getElementById('listenersCount');
+    const bitrateInfo = document.getElementById('bitrateInfo');
+    const statusDot = document.getElementById('statusDot');
+    const historyList = document.getElementById('historyList');
+
+    let lastSongId = null;
+
+    async function fetchNowPlaying() {
+      try {
+        const res = await fetch(`${CONFIG.azuracastUrl}/api/nowplaying/${CONFIG.stationId}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        // Now playing
+        const song = data.now_playing?.song;
+        if (song) {
+          npTitle.textContent = song.title || song.text || 'Unknown';
+          npArtist.textContent = song.artist || '';
+
+          // Flash effect on song change
+          if (song.id !== lastSongId) {
+            lastSongId = song.id;
+            npTitle.style.color = '#fff';
+            npTitle.style.textShadow = '0 0 20px rgba(0,255,213,0.8)';
+            setTimeout(() => {
+              npTitle.style.color = '';
+              npTitle.style.textShadow = '';
+            }, 1500);
+          }
+        }
+
+        // Listeners
+        const total = data.listeners?.total ?? 0;
+        listenersCount.textContent = `${total} listener${total !== 1 ? 's' : ''}`;
+        statusDot.classList.remove('offline');
+
+        // Bitrate from first mount
+        const mount = data.station?.mounts?.[0];
+        if (mount) {
+          bitrateInfo.textContent = `${mount.bitrate || '—'}kbps ${(mount.format || '').toUpperCase()}`;
+        }
+
+        // Song history
+        if (data.song_history && data.song_history.length > 0) {
+          historyList.innerHTML = '';
+          const items = data.song_history.slice(0, 5);
+          for (const entry of items) {
+            const li = document.createElement('li');
+            li.className = 'history-item';
+            const time = new Date(entry.played_at * 1000);
+            const hh = String(time.getHours()).padStart(2, '0');
+            const mm = String(time.getMinutes()).padStart(2, '0');
+            li.innerHTML = `
+              <span class="history-time">${hh}:${mm}</span>
+              <span class="history-song">${entry.song?.text || 'Unknown'}</span>
+            `;
+            historyList.appendChild(li);
+          }
+        }
+      } catch (err) {
+        console.warn('NowPlaying fetch error:', err);
+        npTitle.innerHTML = '<span class="loading-text">CONNECTION LOST...</span>';
+        npArtist.textContent = '';
+        statusDot.classList.add('offline');
+      }
+    }
+
+    // Initial fetch + polling
+    fetchNowPlaying();
+    setInterval(fetchNowPlaying, CONFIG.pollInterval);
+
+    // ═══════════════════════════════════════════
+    // KEYBOARD SHORTCUTS
+    // ═══════════════════════════════════════════
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target === document.body) {
+        e.preventDefault();
+        playBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>

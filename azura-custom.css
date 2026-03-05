@@ -1,0 +1,464 @@
+/* ═══════════════════════════════════════════════════════════
+   KEYGEN FM — ZX SPECTRUM THEME
+   AzuraCast Custom CSS for Public Pages
+   Paste into: Admin → Custom Branding → Custom CSS for Public Pages
+   Set public page theme to "Dark" in Custom Branding settings
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── ZX SPECTRUM FONT ── */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ── ZX SPECTRUM PALETTE ──
+   PAPER:   #c0c0c0 (light gray)
+   INK:     #000000 (black)
+   BRIGHT:  #d7d7d7 (white)
+   BLUE:    #0000d7 / #0022c7
+   RED:     #d70000
+   MAGENTA: #d700d7
+   GREEN:   #00d700
+   CYAN:    #00d7d7
+   YELLOW:  #d7d700
+   ════════════════════════ */
+
+/* ── BACKGROUND — ZX SPECTRUM LOADING STRIPES ── */
+[data-bs-theme] body.page-minimal {
+  background: #c0c0c0 !important;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.03) 3px,
+      rgba(0, 0, 0, 0.03) 4px
+    ) !important;
+  font-family: 'Press Start 2P', monospace !important;
+  image-rendering: pixelated;
+}
+
+/* loading stripe bar at top */
+[data-bs-theme] body.page-minimal::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    90deg,
+    #d70000 0px, #d70000 8px,
+    #d7d700 8px, #d7d700 16px,
+    #00d700 16px, #00d700 24px,
+    #00d7d7 24px, #00d7d7 32px,
+    #0000d7 32px, #0000d7 40px,
+    #d700d7 40px, #d700d7 48px
+  );
+  animation: zx-stripe-scroll 3s linear infinite;
+}
+
+@keyframes zx-stripe-scroll {
+  0%   { background-position: 0 0; }
+  100% { background-position: 48px 0; }
+}
+
+/* ── MAIN CONTAINER ── */
+[data-bs-theme] body.page-minimal .public-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 12px 40px;
+}
+
+/* ── CARD — the main panel ── */
+[data-bs-theme] body.page-minimal .public-page .card {
+  background: #d7d7d7 !important;
+  border: 3px solid #000 !important;
+  border-radius: 0 !important;
+  box-shadow:
+    4px 4px 0 #000,
+    inset 0 0 0 1px #fff,
+    inset 0 0 0 2px #a0a0a0;
+  color: #000 !important;
+  font-family: 'Press Start 2P', monospace !important;
+  overflow: visible;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card::before {
+  content: '■ KEYGEN FM ■';
+  display: block;
+  background: #0000d7;
+  color: #d7d7d7;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 6px 10px;
+  margin: -1px -1px 0 -1px;
+  border-bottom: 2px solid #000;
+  text-align: center;
+  animation: zx-blink-title 2s step-end infinite;
+}
+
+@keyframes zx-blink-title {
+  0%, 80% { opacity: 1; }
+  81%, 100% { opacity: 0.85; }
+}
+
+/* ── CARD BODY ── */
+[data-bs-theme] body.page-minimal .public-page .card .card-body {
+  padding: 16px !important;
+}
+
+/* ── ALBUM ART ── */
+[data-bs-theme] body.page-minimal .public-page .card .now-playing-art img,
+[data-bs-theme] body.page-minimal .public-page .card .album-art img,
+[data-bs-theme] body.page-minimal .public-page .card img.album-art {
+  border: 2px solid #000 !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 0 #000;
+  image-rendering: pixelated;
+}
+
+/* ── NOW PLAYING TEXT ── */
+[data-bs-theme] body.page-minimal .public-page .card .now-playing-title,
+[data-bs-theme] body.page-minimal .public-page .card .now-playing-details .now-playing-title {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 11px !important;
+  color: #000 !important;
+  line-height: 1.8 !important;
+  letter-spacing: 0.5px;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .now-playing-artist,
+[data-bs-theme] body.page-minimal .public-page .card .now-playing-details .now-playing-artist {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  color: #0000d7 !important;
+  line-height: 1.8 !important;
+}
+
+/* ── PLAYER CONTROLS ── */
+[data-bs-theme] body.page-minimal .public-page .card .radio-controls,
+[data-bs-theme] body.page-minimal .public-page .card .radio-player-widget {
+  font-family: 'Press Start 2P', monospace !important;
+}
+
+/* Play/pause and other buttons */
+[data-bs-theme] body.page-minimal .public-page .card .btn,
+[data-bs-theme] body.page-minimal .public-page .card button {
+  font-family: 'Press Start 2P', monospace !important;
+  border-radius: 0 !important;
+  border: 2px solid #000 !important;
+  text-transform: uppercase;
+  font-size: 9px !important;
+  letter-spacing: 1px;
+  transition: none !important;
+  cursor: pointer;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .btn-primary,
+[data-bs-theme] body.page-minimal .public-page .card .btn-success {
+  background: #0000d7 !important;
+  color: #d7d7d7 !important;
+  box-shadow: 2px 2px 0 #000;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .btn-primary:hover,
+[data-bs-theme] body.page-minimal .public-page .card .btn-success:hover {
+  background: #00d7d7 !important;
+  color: #000 !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .btn-primary:active,
+[data-bs-theme] body.page-minimal .public-page .card .btn-success:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .btn-secondary,
+[data-bs-theme] body.page-minimal .public-page .card .btn-outline-secondary,
+[data-bs-theme] body.page-minimal .public-page .card .btn-dark,
+[data-bs-theme] body.page-minimal .public-page .card .btn-outline-light,
+[data-bs-theme] body.page-minimal .public-page .card .btn-outline-dark {
+  background: #a0a0a0 !important;
+  color: #000 !important;
+  box-shadow: 2px 2px 0 #000;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .btn-secondary:hover,
+[data-bs-theme] body.page-minimal .public-page .card .btn-outline-secondary:hover,
+[data-bs-theme] body.page-minimal .public-page .card .btn-dark:hover,
+[data-bs-theme] body.page-minimal .public-page .card .btn-outline-light:hover,
+[data-bs-theme] body.page-minimal .public-page .card .btn-outline-dark:hover {
+  background: #d7d700 !important;
+  color: #000 !important;
+}
+
+/* ── VOLUME SLIDER ── */
+[data-bs-theme] body.page-minimal .public-page .card input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: #a0a0a0;
+  border: 1px solid #000;
+  border-radius: 0;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 10px;
+  height: 14px;
+  background: #000;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card input[type="range"]::-moz-range-thumb {
+  width: 10px;
+  height: 14px;
+  background: #000;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+/* ── SONG HISTORY / REQUEST LIST ── */
+[data-bs-theme] body.page-minimal .public-page .card table,
+[data-bs-theme] body.page-minimal .public-page .card .table {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  color: #000 !important;
+  border-collapse: collapse;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card table th {
+  background: #0000d7 !important;
+  color: #d7d7d7 !important;
+  font-size: 7px !important;
+  letter-spacing: 1px;
+  border: 1px solid #000 !important;
+  padding: 6px 8px !important;
+  text-transform: uppercase;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card table td {
+  border: 1px solid #a0a0a0 !important;
+  padding: 5px 8px !important;
+  background: #d7d7d7 !important;
+  color: #000 !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card table tr:nth-child(even) td {
+  background: #c8c8c8 !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card table tr:hover td {
+  background: #00d7d7 !important;
+  color: #000 !important;
+}
+
+/* ── LIST GROUPS (history, requests) ── */
+[data-bs-theme] body.page-minimal .public-page .card .list-group-item {
+  background: #d7d7d7 !important;
+  color: #000 !important;
+  border: 1px solid #a0a0a0 !important;
+  border-radius: 0 !important;
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  line-height: 1.8;
+  padding: 8px 10px !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .list-group-item:hover {
+  background: #c8c8c8 !important;
+}
+
+/* ── TABS / NAV ── */
+[data-bs-theme] body.page-minimal .public-page .card .nav-tabs,
+[data-bs-theme] body.page-minimal .public-page .card .nav-pills {
+  border-bottom: 2px solid #000 !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .nav-link {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 8px !important;
+  color: #000 !important;
+  border-radius: 0 !important;
+  border: 1px solid transparent !important;
+  padding: 6px 12px !important;
+  letter-spacing: 0.5px;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .nav-link:hover {
+  background: #c8c8c8 !important;
+  border-color: #a0a0a0 !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card .nav-link.active {
+  background: #0000d7 !important;
+  color: #d7d7d7 !important;
+  border: 1px solid #000 !important;
+}
+
+/* ── HEADINGS & TEXT INSIDE CARD ── */
+[data-bs-theme] body.page-minimal .public-page .card h1,
+[data-bs-theme] body.page-minimal .public-page .card h2,
+[data-bs-theme] body.page-minimal .public-page .card h3,
+[data-bs-theme] body.page-minimal .public-page .card h4,
+[data-bs-theme] body.page-minimal .public-page .card h5,
+[data-bs-theme] body.page-minimal .public-page .card h6 {
+  font-family: 'Press Start 2P', monospace !important;
+  color: #000 !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card p,
+[data-bs-theme] body.page-minimal .public-page .card span,
+[data-bs-theme] body.page-minimal .public-page .card div,
+[data-bs-theme] body.page-minimal .public-page .card label {
+  font-family: 'Press Start 2P', monospace !important;
+}
+
+/* ── LINKS ── */
+[data-bs-theme] body.page-minimal .public-page .card a {
+  color: #0000d7 !important;
+  text-decoration: none !important;
+}
+
+[data-bs-theme] body.page-minimal .public-page .card a:hover {
+  color: #d70000 !important;
+  text-decoration: underline !important;
+}
+
+/* ── FORM INPUTS (for song requests etc) ── */
+[data-bs-theme] body.page-minimal .public-page .card input[type="text"],
+[data-bs-theme] body.page-minimal .public-page .card input[type="search"],
+[data-bs-theme] body.page-minimal .public-page .card input[type="email"],
+[data-bs-theme] body.page-minimal .public-page .card select,
+[data-bs-theme] body.page-minimal .public-page .card textarea,
+[data-bs-theme] body.page-minimal .public-page .card .form-control {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 9px !important;
+  background: #c0c0c0 !important;
+  color: #000 !important;
+  border: 2px solid #000 !important;
+  border-radius: 0 !important;
+  padding: 6px 8px !important;
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.15);
+}
+
+[data-bs-theme] body.page-minimal .public-page .card input:focus,
+[data-bs-theme] body.page-minimal .public-page .card select:focus,
+[data-bs-theme] body.page-minimal .public-page .card textarea:focus,
+[data-bs-theme] body.page-minimal .public-page .card .form-control:focus {
+  outline: none !important;
+  border-color: #0000d7 !important;
+  box-shadow: 0 0 0 2px #0000d7 !important;
+}
+
+/* ── SCROLLBAR ── */
+[data-bs-theme] body.page-minimal ::-webkit-scrollbar {
+  width: 10px;
+  background: #c0c0c0;
+}
+
+[data-bs-theme] body.page-minimal ::-webkit-scrollbar-thumb {
+  background: #a0a0a0;
+  border: 1px solid #000;
+}
+
+[data-bs-theme] body.page-minimal ::-webkit-scrollbar-thumb:hover {
+  background: #808080;
+}
+
+/* ── BADGES ── */
+[data-bs-theme] body.page-minimal .public-page .card .badge {
+  font-family: 'Press Start 2P', monospace !important;
+  font-size: 7px !important;
+  border-radius: 0 !important;
+  border: 1px solid #000;
+  padding: 3px 6px !important;
+}
+
+/* ── PIXELATED CURSOR BLINK — appended by JS ── */
+@keyframes zx-cursor {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.zx-cursor::after {
+  content: '█';
+  animation: zx-cursor 0.8s step-end infinite;
+  color: #000;
+  margin-left: 2px;
+}
+
+/* ── BOTTOM BORDER BAR ── */
+[data-bs-theme] body.page-minimal::after {
+  content: '';
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    90deg,
+    #d700d7 0px, #d700d7 8px,
+    #0000d7 8px, #0000d7 16px,
+    #00d7d7 16px, #00d7d7 24px,
+    #00d700 24px, #00d700 32px,
+    #d7d700 32px, #d7d700 40px,
+    #d70000 40px, #d70000 48px
+  );
+  animation: zx-stripe-scroll 3s linear infinite reverse;
+}
+
+/* ── PIXEL GRID TEXTURE ON CARD ── */
+[data-bs-theme] body.page-minimal .public-page .card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 1px,
+      rgba(0,0,0,0.015) 1px,
+      rgba(0,0,0,0.015) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 1px,
+      rgba(0,0,0,0.015) 1px,
+      rgba(0,0,0,0.015) 2px
+    );
+  z-index: 0;
+}
+
+/* ── SMALL SCREENS ── */
+@media (max-width: 480px) {
+  [data-bs-theme] body.page-minimal .public-page .card .now-playing-title,
+  [data-bs-theme] body.page-minimal .public-page .card .now-playing-details .now-playing-title {
+    font-size: 9px !important;
+  }
+
+  [data-bs-theme] body.page-minimal .public-page .card::before {
+    font-size: 8px;
+  }
+}
+
+a[href*="playlist"] {
+  visibility: hidden;
+}
+
+.card-body.buttons.pt-0 {
+  display: flex !important;
+}
+
+.card-body.buttons.pt-0 .btn {
+  flex: 1 !important;
+  text-align: center !important;
+}

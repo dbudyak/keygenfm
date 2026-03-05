@@ -1,0 +1,4 @@
+services:
+  web:
+    volumes:
+      - /mnt/lvm/music/8bit/:/var/azuracast/stations/keygen-fm/media/
