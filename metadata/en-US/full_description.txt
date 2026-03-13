@@ -1,0 +1,15 @@
+Keygen FM is a 24/7 internet radio station dedicated to chiptune, cracktro, and demoscene music. Experience the nostalgic sounds of vintage computer music with a retro Windows 95-styled interface.
+
+<b>Features:</b>
+• Stream high-quality MP3 audio 24/7
+• Real-time now playing information
+• Album artwork display
+• Background playback support
+• Persistent media notification with playback controls
+• Volume control
+• Live listener count
+• Classic Windows 95 aesthetic with pixel-perfect design
+
+The app connects to a self-hosted AzuraCast radio server, providing reliable streaming and up-to-date track metadata. Perfect for fans of chiptune, keygen music, MOD/XM/IT tracker formats, and classic demoscene productions.
+
+No ads. No tracking. Just pure chiptune bliss.

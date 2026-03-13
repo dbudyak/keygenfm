@@ -1,0 +1,6 @@
+Initial F-Droid release
+• Stream 24/7 chiptune radio
+• Windows 95 retro UI
+• Background playback
+• Now playing metadata
+• Volume controls
